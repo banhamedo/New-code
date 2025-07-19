@@ -10,10 +10,6 @@ export default function Services() {
     setIsVisible(true);
   }, []);
 
-  const openModal = (service: any) => {
-    setSelected(service);
-    setShowModal(true);
-  };
   const closeModal = () => {
     setShowModal(false);
     setTimeout(() => setSelected(null), 300);
