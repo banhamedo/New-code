@@ -1,36 +1,155 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# New Code Development - موقع شركة تطوير مواقع الويب
 
-## Getting Started
+موقع شخصي احترافي لشركة New Code Development متخصصة في تطوير مواقع الويب والتطبيقات الحديثة.
 
-First, run the development server:
+## 🚀 المميزات
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **تصميم عصري**: واجهة مستخدم جذابة وعصرية
+- **متجاوب بالكامل**: يعمل على جميع الأجهزة والشاشات
+- **أداء عالي**: محسن للسرعة والأداء
+- **SEO محسن**: محسن لمحركات البحث
+- **واجهة عربية**: تصميم مخصص للغة العربية
+- **أقسام شاملة**: 
+  - الصفحة الرئيسية
+  - عن الشركة
+  - الخدمات
+  - الأسعار
+  - الاتصال
+
+## 🛠️ التقنيات المستخدمة
+
+- **Next.js 15** - إطار عمل React
+- **TypeScript** - لكتابة كود آمن ومنظم
+- **Tailwind CSS** - لتصميم سريع ومتجاوب
+- **React Hooks** - لإدارة الحالة
+- **خط Tajawal** - خط عربي جميل
+
+## 📁 هيكل المشروع
+
+```
+new-code-website/
+├── src/
+│   ├── app/
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   └── components/
+│       ├── Navbar.tsx
+│       ├── Hero.tsx
+│       ├── About.tsx
+│       ├── Services.tsx
+│       ├── Pricing.tsx
+│       ├── Contact.tsx
+│       └── Footer.tsx
+├── public/
+│   └── fonts/
+├── package.json
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 التثبيت والتشغيل
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### المتطلبات الأساسية
+- Node.js 18 أو أحدث
+- npm أو yarn
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### خطوات التثبيت
 
-## Learn More
+1. **استنساخ المشروع**
+```bash
+git clone <repository-url>
+cd new-code-website
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. **تثبيت التبعيات**
+```bash
+npm install
+# أو
+yarn install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **تشغيل المشروع في وضع التطوير**
+```bash
+npm run dev
+# أو
+yarn dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. **فتح المتصفح**
+افتح [http://localhost:3000](http://localhost:3000) في متصفحك
 
-## Deploy on Vercel
+### بناء المشروع للإنتاج
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build
+npm start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📱 الأقسام الرئيسية
+
+### 1. الصفحة الرئيسية (Hero)
+- عنوان جذاب للشركة
+- وصف مختصر للخدمات
+- إحصائيات الشركة
+- أزرار دعوة للعمل
+
+### 2. عن الشركة
+- رؤية ومهمة الشركة
+- القيم الأساسية
+- التقنيات المستخدمة
+- فريق العمل
+
+### 3. الخدمات
+- تطوير مواقع الويب
+- تطبيقات الويب
+- تطبيقات الموبايل
+- المتاجر الإلكترونية
+- الصيانة والدعم
+- الاستشارات التقنية
+
+### 4. الأسعار
+- خطط مختلفة للخدمات
+- أسعار شفافة
+- خدمات إضافية
+- الأسئلة الشائعة
+
+### 5. الاتصال
+- نموذج اتصال تفاعلي
+- معلومات الاتصال
+- وسائل التواصل الاجتماعي
+- ساعات العمل
+
+## 🎨 التصميم
+
+- **الألوان**: تدرجات الأزرق والبنفسجي
+- **الخطوط**: خط Tajawal العربي
+- **التأثيرات**: تأثيرات زجاجية وانتقالات سلسة
+- **التجاوب**: تصميم متجاوب لجميع الأجهزة
+
+## 📧 معلومات الاتصال
+
+- **البريد الإلكتروني**: info@newcode.dev
+- **الهاتف**: +966 50 123 4567
+- **العنوان**: الرياض، المملكة العربية السعودية
+
+## 🤝 المساهمة
+
+نرحب بمساهماتكم! يرجى اتباع الخطوات التالية:
+
+1. Fork المشروع
+2. إنشاء فرع جديد للميزة
+3. Commit التغييرات
+4. Push إلى الفرع
+5. إنشاء Pull Request
+
+## 📄 الترخيص
+
+هذا المشروع مرخص تحت رخصة MIT.
+
+## 🙏 الشكر
+
+شكراً لجميع المساهمين والمطورين الذين ساعدوا في تطوير هذا المشروع.
+
+---
+
+**New Code Development** - نطور مستقبلك الرقمي 🌟

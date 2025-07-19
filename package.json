@@ -1,27 +1,56 @@
 {
   "name": "new-code-website",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "موقع شخصي احترافي لشركة New Code Development متخصصة في تطوير مواقع الويب والتطبيقات الحديثة",
+  "keywords": [
+    "nextjs",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "web-development",
+    "arabic-website",
+    "company-website"
+  ],
+  "author": "New Code Development",
+  "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.3.5"
+    "next": "15.3.5",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-tsparticles": "^2.12.2",
+    "tsparticles": "^3.8.1",
+    "tsparticles-slim": "^2.12.0"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
-    "eslint": "^9",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.21",
+    "critters": "^0.0.23",
+    "eslint": "^8",
     "eslint-config-next": "15.3.5",
-    "@eslint/eslintrc": "^3"
-  }
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/newcode-dev/website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/newcode-dev/website/issues"
+  },
+  "homepage": "https://newcode.dev"
 }
