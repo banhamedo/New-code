@@ -1,4 +1,4 @@
-import { ref, push, set } from 'firebase/database';
+import { ref, push, set, get, query, orderByChild } from 'firebase/database';
 import { database } from './firebase';
 
 export interface ContactFormData {
@@ -12,6 +12,11 @@ export interface ContactFormData {
   timestamp: number;
   ip?: string;
   userAgent?: string;
+}
+
+export interface ContactRecord extends ContactFormData {
+  id: string;
+  createdAt: string;
 }
 
 export const saveContactForm = async (formData: ContactFormData): Promise<boolean> => {
@@ -47,4 +52,43 @@ export const getContactFormData = (formData: any): ContactFormData => {
     message: formData.message || '',
     timestamp: Date.now(),
   };
+};
+
+// دالة لجلب جميع بيانات التواصل
+export const getAllContacts = async (): Promise<ContactRecord[]> => {
+  try {
+    const contactsRef = ref(database, 'contacts');
+    const contactsQuery = query(contactsRef, orderByChild('timestamp'));
+    const snapshot = await get(contactsQuery);
+    
+    if (snapshot.exists()) {
+      const contacts: ContactRecord[] = [];
+      snapshot.forEach((childSnapshot) => {
+        contacts.push({
+          id: childSnapshot.key!,
+          ...childSnapshot.val()
+        });
+      });
+      
+      // ترتيب البيانات من الأحدث إلى الأقدم
+      return contacts.reverse();
+    }
+    
+    return [];
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    return [];
+  }
+};
+
+// دالة لحذف رسالة
+export const deleteContact = async (contactId: string): Promise<boolean> => {
+  try {
+    const contactRef = ref(database, `contacts/${contactId}`);
+    await set(contactRef, null);
+    return true;
+  } catch (error) {
+    console.error('Error deleting contact:', error);
+    return false;
+  }
 }; 
