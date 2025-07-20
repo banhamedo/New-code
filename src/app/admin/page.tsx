@@ -7,6 +7,8 @@ export default function AdminPage() {
   const [contacts, setContacts] = useState<ContactRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selected, setSelected] = useState<ContactRecord | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     loadContacts();
@@ -39,6 +41,16 @@ export default function AdminPage() {
         alert('حدث خطأ في حذف الرسالة');
       }
     }
+  };
+
+  const handleView = (contact: ContactRecord) => {
+    setSelected(contact);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setTimeout(() => setSelected(null), 300);
   };
 
   const formatDate = (timestamp: number) => {
@@ -168,7 +180,13 @@ export default function AdminPage() {
                         {contact.message || '-'}
                       </div>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 flex gap-2">
+                      <button
+                        onClick={() => handleView(contact)}
+                        className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-sm transition-colors"
+                      >
+                        عرض
+                      </button>
                       <button
                         onClick={() => handleDelete(contact.id)}
                         className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm transition-colors"
@@ -183,6 +201,30 @@ export default function AdminPage() {
           </div>
         )}
       </div>
+
+      {/* نافذة منبثقة لعرض التفاصيل */}
+      {showModal && selected && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fade-in" onClick={closeModal}>
+          <div className="relative bg-gray-900 rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-8 animate-slide-up" style={{animationDelay: '0.1s', animationFillMode: 'both'}} onClick={e => e.stopPropagation()}>
+            <button onClick={closeModal} className="absolute left-4 top-4 text-gray-400 hover:text-green-400 text-2xl font-bold">×</button>
+            <div className="flex flex-col gap-2 text-right">
+              <h2 className="text-2xl font-bold mb-2 gradient-text">تفاصيل الرسالة</h2>
+              <div><span className="font-bold">الاسم:</span> {selected.name}</div>
+              <div><span className="font-bold">البريد الإلكتروني:</span> <a href={`mailto:${selected.email}`} className="text-green-400 hover:underline">{selected.email}</a></div>
+              <div><span className="font-bold">الهاتف:</span> {selected.phone || '-'}</div>
+              <div><span className="font-bold">الشركة:</span> {selected.company || '-'}</div>
+              <div><span className="font-bold">الخدمة:</span> {getServiceLabel(selected.service)}</div>
+              <div><span className="font-bold">الميزانية:</span> {selected.budget || '-'}</div>
+              <div><span className="font-bold">التاريخ:</span> {formatDate(selected.timestamp)}</div>
+              <div><span className="font-bold">الرسالة:</span><br />
+                <div className="bg-gray-800 rounded-lg p-3 mt-1 text-gray-200 whitespace-pre-line max-h-60 overflow-auto">
+                  {selected.message || '-'}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 
