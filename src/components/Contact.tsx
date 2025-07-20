@@ -218,7 +218,6 @@ export default function Contact() {
                 <textarea
                   id="message"
                   name="message"
-                  required
                   rows={4}
                   className="w-full px-4 py-3 md:py-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-300 resize-none"
                   placeholder="أخبرنا عن مشروعك وأهدافك ومتطلباتك..."
