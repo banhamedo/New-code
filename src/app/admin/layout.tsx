@@ -13,7 +13,7 @@ export default function AdminLayout({
 }) {
   return (
     <html lang="ar" dir="rtl">
-      <body className="antialiased">
+      <body className="font-tajawal antialiased">
         {children}
       </body>
     </html>
