@@ -1,3 +1,11 @@
+import type { Metadata } from 'next'
+import '../globals.css'
+
+export const metadata: Metadata = {
+  title: 'لوحة الإدارة - New Code',
+  description: 'لوحة إدارة رسائل التواصل',
+}
+
 export default function AdminLayout({
   children,
 }: {
@@ -5,7 +13,7 @@ export default function AdminLayout({
 }) {
   return (
     <html lang="ar" dir="rtl">
-      <body>
+      <body className="antialiased">
         {children}
       </body>
     </html>
