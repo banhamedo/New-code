@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { saveContactForm, getContactFormData } from '../lib/contactService'
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -12,6 +13,8 @@ export default function Contact() {
     message: ''
   })
   const [isVisible, setIsVisible] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     // قراءة معاملات URL
@@ -44,11 +47,41 @@ export default function Contact() {
     };
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // هنا يمكن إضافة منطق إرسال النموذج
-    console.log('Form submitted:', formData)
-    alert('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.')
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      // تحضير البيانات
+      const contactData = getContactFormData(formData);
+      
+      // حفظ البيانات في Firebase
+      const success = await saveContactForm(contactData);
+      
+      if (success) {
+        setSubmitStatus('success');
+        // إعادة تعيين النموذج
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          company: '',
+          service: '',
+          message: ''
+        });
+        alert('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.');
+      } else {
+        setSubmitStatus('error');
+        alert('حدث خطأ في إرسال الرسالة. يرجى المحاولة مرة أخرى.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+      alert('حدث خطأ في إرسال الرسالة. يرجى المحاولة مرة أخرى.');
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -121,28 +154,42 @@ export default function Contact() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="service" className="block text-sm md:text-base font-semibold text-white mb-2">
-                    نوع الخدمة *
+                  <label htmlFor="company" className="block text-sm md:text-base font-semibold text-white mb-2">
+                    اسم الشركة
                   </label>
-                  <select
-                    id="service"
-                    name="service"
-                    required
-                    className="w-full px-4 py-3 md:py-4 bg-white text-black border border-white/20 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-300"
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    className="w-full px-4 py-3 md:py-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-300"
+                    placeholder="أدخل اسم شركتك (اختياري)"
                     onChange={handleChange}
-                  >
-                    <option value="">اختر نوع الخدمة</option>
-                    <option value="website">تطوير المواقع</option>
-                    <option value="app">تطوير التطبيقات</option>
-                    <option value="ecommerce">التجارة الإلكترونية</option>
-                    <option value="maintenance">صيانة المواقع</option>
-                    <option value="erp">أنظمة ERP</option>
-                    <option value="crm">أنظمة CRM</option>
-                    <option value="security">الأمن السيبراني</option>
-                    <option value="ai">حلول الذكاء الاصطناعي</option>
-                    <option value="other">خدمات أخرى</option>
-                  </select>
+                  />
                 </div>
+              </div>
+
+              <div>
+                <label htmlFor="service" className="block text-sm md:text-base font-semibold text-white mb-2">
+                  نوع الخدمة *
+                </label>
+                <select
+                  id="service"
+                  name="service"
+                  required
+                  className="w-full px-4 py-3 md:py-4 bg-white text-black border border-white/20 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-300"
+                  onChange={handleChange}
+                >
+                  <option value="">اختر نوع الخدمة</option>
+                  <option value="website">تطوير المواقع</option>
+                  <option value="app">تطوير التطبيقات</option>
+                  <option value="ecommerce">التجارة الإلكترونية</option>
+                  <option value="maintenance">صيانة المواقع</option>
+                  <option value="erp">أنظمة ERP</option>
+                  <option value="crm">أنظمة CRM</option>
+                  <option value="security">الأمن السيبراني</option>
+                  <option value="ai">حلول الذكاء الاصطناعي</option>
+                  <option value="other">خدمات أخرى</option>
+                </select>
               </div>
 
               <div>
@@ -181,16 +228,46 @@ export default function Contact() {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-green-500 to-gray-800 text-white py-3 md:py-4 rounded-xl font-bold text-base md:text-lg hover:from-green-600 hover:to-gray-900 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-green-500/25"
+                disabled={isSubmitting}
+                className={`w-full py-3 md:py-4 rounded-xl font-bold text-base md:text-lg transition-all duration-300 transform shadow-2xl ${
+                  isSubmitting 
+                    ? 'bg-gray-600 cursor-not-allowed' 
+                    : 'bg-gradient-to-r from-green-500 to-gray-800 hover:from-green-600 hover:to-gray-900 hover:scale-105 hover:shadow-green-500/25'
+                } text-white`}
               >
                 <span className="flex items-center justify-center">
-                  <span className="hidden sm:inline">إرسال الطلب</span>
-                  <span className="sm:hidden">إرسال الطلب</span>
-                  <svg className="w-4 h-4 md:w-5 md:h-5 mr-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                  </svg>
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span>جاري الإرسال...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="hidden sm:inline">إرسال الطلب</span>
+                      <span className="sm:hidden">إرسال الطلب</span>
+                      <svg className="w-4 h-4 md:w-5 md:h-5 mr-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                      </svg>
+                    </>
+                  )}
                 </span>
               </button>
+              
+              {/* رسائل الحالة */}
+              {submitStatus === 'success' && (
+                <div className="mt-4 p-4 bg-green-500/20 border border-green-500/30 rounded-xl text-green-400 text-center">
+                  ✅ تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.
+                </div>
+              )}
+              
+              {submitStatus === 'error' && (
+                <div className="mt-4 p-4 bg-red-500/20 border border-red-500/30 rounded-xl text-red-400 text-center">
+                  ❌ حدث خطأ في إرسال الرسالة. يرجى المحاولة مرة أخرى.
+                </div>
+              )}
             </form>
           </div>
 
