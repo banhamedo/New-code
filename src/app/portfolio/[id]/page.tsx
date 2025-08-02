@@ -4,11 +4,30 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+interface Project {
+  id: number;
+  title: string;
+  category: string;
+  description: string;
+  fullDescription: string;
+  image: string;
+  technologies: string[];
+  client: string;
+  duration: string;
+  features: string[];
+  challenges: string[];
+  solutions: string[];
+  results: string[];
+  link: string;
+  color: string;
+  gallery: string[];
+}
+
 export default function PortfolioDetail() {
   const params = useParams();
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
-  const [project, setProject] = useState(null);
+  const [project, setProject] = useState<Project | null>(null);
 
   useEffect(() => {
     setIsVisible(true);
@@ -161,7 +180,7 @@ export default function PortfolioDetail() {
       }
     ];
 
-    const projectId = parseInt(params.id as string);
+    const projectId = parseInt(params['id'] as string);
     const foundProject = projects.find(p => p.id === projectId);
     
     if (!foundProject) {
@@ -170,7 +189,7 @@ export default function PortfolioDetail() {
     }
     
     setProject(foundProject);
-  }, [params.id, router]);
+  }, [params['id'], router]);
 
   if (!project) {
     return (
